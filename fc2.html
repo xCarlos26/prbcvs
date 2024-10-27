@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Meta tag para responsive design -->
+    <title>Botón con Carga y Video</title>
+    <style>
+        body {
+            background-image: url('https://i.pinimg.com/originals/c0/ce/c3/c0cec3d25f6f97bf9ee390b1d1f61555.jpg'); /* Imagen de fondo inicial */
+            background-size: cover; /* Asegura que la imagen cubra todo el fondo */
+            background-position: center; /* Centra la imagen */
+            color: white; /* Color de texto blanco para contraste */
+            display: flex; /* Usamos Flexbox para centrar */
+            justify-content: center; /* Centra horizontalmente */
+            align-items: center; /* Centra verticalmente */
+            height: 100vh; /* Altura completa de la ventana */
+            margin: 0; /* Elimina el margen por defecto */
+            flex-direction: column; /* Apila el contenido verticalmente */
+            padding: 20px; /* Espaciado interno */
+            box-sizing: border-box; /* Incluye padding en el ancho total */
+            transition: background-color 0.5s, background-image 0.5s; /* Transición suave */
+        }
+
+        .loading-button-container {
+            text-align: center; /* Centra el contenido dentro del contenedor */
+            width: 100%; /* Ancho completo */
+            max-width: 400px; /* Ancho máximo para pantallas grandes */
+        }
+
+        .loading-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #00bcd4; /* Color celeste */
+            color: white; /* Color del texto */
+            border: none; /* Sin borde */
+            border-radius: 5px; /* Bordes redondeados */
+            transition: background-color 0.3s; /* Transición suave al cambiar el color */
+            width: 100%; /* Ancho completo */
+        }
+
+        .loading-button:hover {
+            background-color: #0097a7; /* Color celeste más oscuro al pasar el mouse */
+        }
+
+        .loading-bar {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            height: 20px;
+            margin-top: 10px;
+            display: none; /* Ocultamos la barra de carga inicialmente */
+        }
+
+        .loading-progress {
+            height: 100%;
+            width: 0; /* Inicia en 0 */
+            background-color: #4caf50; /* Color verde */
+            border-radius: 5px;
+        }
+
+        #loading-text {
+            margin-top: 5px;
+            font-size: 14px;
+            display: none; /* Ocultar el texto inicialmente */
+        }
+
+        /* Estilo del video */
+        #video-container {
+            display: none; /* Ocultamos el contenedor del video inicialmente */
+            margin-top: 20px; /* Espaciado superior */
+            text-align: center; /* Centra el texto y video */
+        }
+
+        video {
+            width: 100%; /* Ancho completo del video */
+            max-width: 900px; /* Aumenta el ancho máximo del video */
+            height: auto; /* Mantiene la proporción del video */
+            border: 2px solid white; /* Borde blanco para el video */
+        }
+
+        .title {
+            font-size: 24px; /* Tamaño de fuente para el título */
+            margin-bottom: 10px; /* Espaciado debajo del título */
+        }
+
+        .arrow {
+            font-size: 36px; /* Tamaño de la flecha */
+            margin-bottom: 15px; /* Espaciado debajo de la flecha */
+        }
+    </style>
+</head>
+<body>
+    <!-- Contenedor para el título, flecha y botón -->
+    <div class="loading-button-container">
+        <!-- Título -->
+        <div class="title">Click the button</div>
+        <!-- Flecha -->
+        <div class="arrow">⬇️</div>
+        <!-- Botón -->
+        <button class="loading-button" id="loading-button">Click me!</button>
+
+        <!-- Loading bar -->
+        <div class="loading-bar">
+            <div class="loading-progress" id="loading-progress"></div>
+        </div>
+
+        <!-- Loading text -->
+        <p id="loading-text">Cargando...</p>
+    </div>
+
+    <!-- Contenedor del video -->
+    <div id="video-container">
+        <h1>¡Bienvenido al video!</h1>
+        <video controls autoplay>
+            <source src="hbty3.mp4" type="video/mp4"> <!-- Cambia 'hbty3.mp4' por la ruta de tu video -->
+            Tu navegador no soporta el elemento de video.
+        </video>
+    </div>
+
+    <!-- JavaScript code to animate the loading bar -->
+    <script>
+        const loadingButton = document.getElementById("loading-button");
+        const loadingProgress = document.getElementById("loading-progress");
+        const loadingText = document.getElementById("loading-text");
+        const videoContainer = document.getElementById("video-container"); // Contenedor del video
+        const body = document.body; // Referencia al body
+
+        loadingButton.addEventListener("click", () => {
+            loadingProgress.style.width = '0%'; // Reiniciar la barra
+            loadingText.style.display = "block"; // Mostrar texto
+            loadingProgress.parentElement.style.display = "block"; // Mostrar barra
+
+            let progressBar = 0;
+            let interval = setInterval(() => {
+                progressBar++;
+                loadingProgress.style.width = `${progressBar}%`;
+                loadingText.textContent = `Cargando... ${progressBar}%`;
+
+                if (progressBar === 100) {
+                    clearInterval(interval);
+                    loadingText.textContent = "Cargando completo!";
+                    // Cambiar la imagen de fondo
+                    body.style.backgroundImage = "url('https://img.freepik.com/fotos-premium/cielo-morado-arboles-primer-plano-montanas-al-fondo_445983-6116.jpg')"; // Cambia 'tu_imagen_de_fondo.jpg' por la ruta de tu imagen
+                    body.style.backgroundSize = "cover"; // Asegúrate de que la imagen cubra todo el fondo
+                    body.style.backgroundPosition = "center"; // Centra la imagen
+                    // Ocultar elementos
+                    document.querySelector('.loading-button-container').style.display = 'none'; // Ocultar contenedor del botón, texto y flecha
+                    // Mostrar el video
+                    videoContainer.style.display = "block"; // Mostrar el contenedor del video
+                }
+            }, 10); // Ajusta este valor para cambiar la velocidad de carga
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
